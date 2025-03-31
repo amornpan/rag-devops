@@ -1,7 +1,92 @@
-# Advanced RAG for LLMs Application
+# RAG DevOps Project: AI สนับสนุนงานพ.ร.บ. คุ้มครองข้อมูลส่วนบุคคล (PDPA)
 
-## Docker & Deployment Workshop
+ระบบ Retrieval-Augmented Generation (RAG) เพื่อช่วยค้นหาและวิเคราะห์ข้อมูลเกี่ยวกับกฎหมายคุ้มครองข้อมูลส่วนบุคคล (PDPA) ของไทย
 
-### Branch List
-- main for source code
-- complete for source code + docker file and docker compose
+## โครงสร้างโปรเจค
+
+```
+rag-devops/
+├── docker-compose.yml
+├── service/
+│   ├── api_advance/
+│   │   ├── api.py
+│   │   ├── Dockerfile
+│   │   └── requirements.txt
+│   ├── app_advance/
+│   │   ├── app.py
+│   │   ├── Dockerfile
+│   │   └── requirements.txt
+│   └── embedding_advance/
+│       ├── embedding.py
+│       ├── Dockerfile
+│       ├── requirements.txt
+│       └── pdf_corpus/
+│           └── PDPA_Guideline_v_1.pdf
+```
+
+## ส่วนประกอบหลัก
+
+ระบบนี้ประกอบด้วย 3 ส่วนหลัก:
+
+1. **Embedding Service**: ทำหน้าที่อ่านเอกสาร PDF และแปลงเป็น vector embeddings เพื่อเก็บลงใน OpenSearch
+2. **API Service**: ให้บริการ API สำหรับค้นหาข้อมูลใน OpenSearch ด้วยวิธี text search
+3. **App Service**: หน้าเว็บแอปพลิเคชัน Streamlit สำหรับผู้ใช้งาน ช่วยในการค้นหาข้อมูลและวิเคราะห์โดยใช้ LLM (Ollama)
+
+## การตั้งค่าภายนอก
+
+ระบบนี้ใช้บริการภายนอกสองบริการ:
+- **OpenSearch**: สำหรับเก็บและค้นหา vector embeddings (http://113.53.253.39:9200)
+- **Ollama**: สำหรับรัน LLM ท้องถิ่น (http://113.53.253.39:11434)
+
+## วิธีการรัน
+
+### การรันแบบ Docker
+
+```bash
+# สร้าง Docker network
+docker network create rag-network
+
+# รันระบบด้วย Docker Compose
+docker-compose up -d
+```
+
+สามารถเข้าถึงหน้าเว็บแอปพลิเคชันได้ที่ http://localhost:8501
+
+### การสร้าง Docker Images เอง
+
+```bash
+# สร้าง Image สำหรับ Embedding Service
+cd service/embedding_advance
+docker build -t amornpan/rag-embedding-advance:latest .
+
+# สร้าง Image สำหรับ API Service
+cd ../api_advance
+docker build -t amornpan/rag-api-advance:latest .
+
+# สร้าง Image สำหรับ App Service
+cd ../app_advance
+docker build -t amornpan/rag-app-advance:latest .
+
+# อัพโหลด Images ไปยัง Docker Hub (ต้อง login ก่อน)
+docker push amornpan/rag-embedding-advance:latest
+docker push amornpan/rag-api-advance:latest
+docker push amornpan/rag-app-advance:latest
+```
+
+## การใช้งาน
+
+1. เข้าสู่เว็บแอปพลิเคชันที่ http://localhost:8501
+2. พิมพ์คำถามเกี่ยวกับ PDPA ในช่องค้นหา
+3. กดปุ่ม "ค้นหา" เพื่อดึงข้อมูลที่เกี่ยวข้องจากเอกสาร
+4. กดปุ่ม "วิเคราะห์" เพื่อใช้ AI วิเคราะห์ข้อมูลที่ได้และตอบคำถาม
+
+## หมายเหตุ
+
+- ระบบนี้ใช้ Qwen2:0.5b เป็นโมเดล LLM ผ่าน Ollama API
+- ระบบถูกออกแบบให้ขยายได้ด้วยการเพิ่มเอกสาร PDF ในโฟลเดอร์ pdf_corpus
+- ในการทำงานปกติ Embedding Service จะรันเพียงครั้งเดียวเพื่อสร้าง embeddings จากนั้นจะหยุดทำงาน
+
+## Branches
+
+- main: โค้ดต้นฉบับ
+- complete: โค้ดต้นฉบับพร้อม Dockerfile และ docker-compose.yml

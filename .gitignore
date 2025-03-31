@@ -1,3 +1,4 @@
-service\api_advance
-service\app_advance
-service\embedding_advance
+.gitignore
+service/api_advance/
+service/app_advance/
+service/embedding_advance/

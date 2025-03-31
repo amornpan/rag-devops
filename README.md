@@ -2,6 +2,37 @@
 
 ระบบ Retrieval-Augmented Generation (RAG) เพื่อช่วยค้นหาและวิเคราะห์ข้อมูลเกี่ยวกับกฎหมายคุ้มครองข้อมูลส่วนบุคคล (PDPA) ของไทย
 
+## การติดตั้ง Docker Desktop
+
+ก่อนเริ่มใช้งานระบบ คุณต้องติดตั้ง Docker Desktop ในเครื่องของคุณ
+
+### สำหรับ Windows
+
+1. ดาวน์โหลด Docker Desktop สำหรับ Windows จาก [เว็บไซต์อย่างเป็นทางการ](https://www.docker.com/products/docker-desktop)
+2. เปิดไฟล์ติดตั้งและทำตามขั้นตอนที่แสดงบนหน้าจอ
+3. หากระบบแจ้งเตือนเกี่ยวกับ WSL 2 ให้ติดตั้งตามที่แนะนำ
+4. หลังจากติดตั้งเสร็จสิ้น ให้รีสตาร์ทเครื่อง
+5. เปิด Docker Desktop และตรวจสอบว่าสถานะเป็น "Docker is running"
+
+### สำหรับ macOS
+
+1. ดาวน์โหลด Docker Desktop สำหรับ Mac จาก [เว็บไซต์อย่างเป็นทางการ](https://www.docker.com/products/docker-desktop)
+2. ลาก Docker.app ไปยังโฟลเดอร์ Applications
+3. เปิด Docker จากโฟลเดอร์ Applications
+4. เมื่อได้รับแจ้งให้อนุญาตการใช้งาน privileges ให้ป้อนรหัสผ่าน
+5. รอจนกระทั่ง Docker เริ่มต้นเสร็จสิ้นและสถานะแสดง "Docker is running"
+
+### การตรวจสอบการติดตั้ง
+
+เปิด Terminal (macOS) หรือ Command Prompt (Windows) และรันคำสั่งต่อไปนี้:
+
+```bash
+docker --version
+docker-compose --version
+```
+
+หากคำสั่งแสดงเวอร์ชัน แสดงว่าการติดตั้งสำเร็จและพร้อมใช้งาน
+
 ## โครงสร้างโปรเจค
 
 ```

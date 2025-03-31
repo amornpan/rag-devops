@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  embedding:
+    image: amornpan/rag-embedding-advance:latest
+    volumes:
+      - ./service/embedding_advance/pdf_corpus:/app/pdf_corpus
+    environment:
+      - OPENSEARCH_ENDPOINT=http://113.53.253.39:9200
+      - OPENSEARCH_INDEX=webinar_pdf_index
+    restart: on-failure
+    networks:
+      - rag-network
+
+  api:
+    image: amornpan/rag-api-advance:latest
+    ports:
+      - "8000:8000"
+    environment:
+      - OPENSEARCH_ENDPOINT=http://113.53.253.39:9200
+      - OPENSEARCH_INDEX=webinar_pdf_index
+    restart: always
+    depends_on:
+      - embedding
+    networks:
+      - rag-network
+
+  app:
+    image: amornpan/rag-app-advance:latest
+    ports:
+      - "8501:8501"
+    environment:
+      - API_URL=http://api:8000
+      - OLLAMA_URL=http://113.53.253.39:11434
+      - MODEL_NAME=qwen2:0.5b
+    restart: always
+    depends_on:
+      - api
+    networks:
+      - rag-network
+
+networks:
+  rag-network:
+    driver: bridge

@@ -1,4 +1,6 @@
 .gitignore
 service/api_advance/
 service/app_advance/
-service/embedding_advance/
+service/embedding_advance/Dockerfile
+service/embedding_advance/embedding.py
+service/embedding_advance/requirements.txt

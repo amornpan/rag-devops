@@ -33,28 +33,6 @@ docker-compose --version
 
 หากคำสั่งแสดงเวอร์ชัน แสดงว่าการติดตั้งสำเร็จและพร้อมใช้งาน
 
-## โครงสร้างโปรเจค
-
-```
-rag-devops/
-├── docker-compose.yml
-├── service/
-│   ├── api_advance/
-│   │   ├── api.py
-│   │   ├── Dockerfile
-│   │   └── requirements.txt
-│   ├── app_advance/
-│   │   ├── app.py
-│   │   ├── Dockerfile
-│   │   └── requirements.txt
-│   └── embedding_advance/
-│       ├── embedding.py
-│       ├── Dockerfile
-│       ├── requirements.txt
-│       └── pdf_corpus/
-│           └── PDPA_Guideline_v_1.pdf
-```
-
 ## ส่วนประกอบหลัก
 
 ระบบนี้ประกอบด้วย 3 ส่วนหลัก:
@@ -82,27 +60,6 @@ docker-compose up -d
 ```
 
 สามารถเข้าถึงหน้าเว็บแอปพลิเคชันได้ที่ http://localhost:8501
-
-### การสร้าง Docker Images เอง
-
-```bash
-# สร้าง Image สำหรับ Embedding Service
-cd service/embedding_advance
-docker build -t amornpan/rag-embedding-advance:latest .
-
-# สร้าง Image สำหรับ API Service
-cd ../api_advance
-docker build -t amornpan/rag-api-advance:latest .
-
-# สร้าง Image สำหรับ App Service
-cd ../app_advance
-docker build -t amornpan/rag-app-advance:latest .
-
-# อัพโหลด Images ไปยัง Docker Hub (ต้อง login ก่อน)
-docker push amornpan/rag-embedding-advance:latest
-docker push amornpan/rag-api-advance:latest
-docker push amornpan/rag-app-advance:latest
-```
 
 ## การใช้งาน
 
